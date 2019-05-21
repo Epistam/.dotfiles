@@ -47,3 +47,20 @@ endfunction
 " Adding automatons for when entering or leaving Vim v2
 au VimEnter * if argc() == 0 | call LoadSession() | endif
 au VimLeave * if argc() == 0 | call MakeSession() | endif
+
+" Managing undofiles (which we want to use even when not in "IDE mode", for
+" stuff such as configuration editing)
+
+" Checking if undo dir is already created, useful for installation on an a new
+" system
+if !isdirectory($HOME."/.vim")
+    call mkdir($HOME."/.vim", "", 0770)
+endif
+if !isdirectory($HOME."/.vim/undo_dir")
+    call mkdir($HOME."/.vim/undo_dir", "", 0700)
+endif
+" Actual undo file and dir rules
+set undodir=~/.vim/undo_dir
+set undofile
+
+" TODO : use full paths and rebuild absolute directory in undodir
